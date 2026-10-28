@@ -29,4 +29,8 @@ public class Reparo {
     public double getPreco(){
         return this.preco;
     }
+
+    public String getId() {
+        return id;
+    }
 }

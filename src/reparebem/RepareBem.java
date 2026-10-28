@@ -4,19 +4,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RepareBem {
-    private ArrayList<OrdemServico> ordens;
-    private HashMap<String, Reparo> reparos;
+    private OrdemServico[] ordens;
+    private Reparo[] reparos;
+	private int qntdReparos;
+	private int qntdOrdens;
+	private static final int MAX_REPAROS = 100;
+	private static final int MAX_ORDENS = 500;
 
 
     public RepareBem(){
-        this.ordens = new ArrayList<>();
-        this.reparos = new HashMap<>();
+        this.ordens = new OrdemServico[MAX_ORDENS];
+        this.reparos = new Reparo[MAX_REPAROS];
+		qntdReparos = 0;
+		qntdOrdens = 0;
     }
     
 	public void cadastrarReparo(String idReparo, String descricao, double preco) {
-	    if (!this.reparos.containsKey(idReparo)){
-            this.reparos.put(idReparo, new Reparo(idReparo, descricao, preco));
-        }
+	    if (qntdReparos >= MAX_REPAROS) { return; }
+
+		Reparo newReparo = new Reparo(idReparo, descricao, preco);
+		for (Reparo reparo : reparos){
+			if (reparo.equals(newReparo)){
+				return;
+			}
+		}
+
+		reparos[qntdReparos++] = newReparo;
 	}
 
 	public void reajustarPrecoReparo(String idReparo, double percentual) {
@@ -24,8 +37,10 @@ public class RepareBem {
 	}
 
 	public int cadastrarOrdemDeServico(String cliente, String telefone, String roupa) {
-		this.ordens.add(new OrdemServico(this.ordens.size() + 1, cliente, telefone, roupa));
-		return this.ordens.size();
+		if (qntdOrdens >= MAX_ORDENS) { return -1; }
+
+		ordens[qntdOrdens++] =  new OrdemServico(qntdOrdens + 1, cliente, telefone, roupa);
+		return qntdOrdens;
 	}
 
 	public String exibirOrdemDeServico(int idOS) {
@@ -63,18 +78,22 @@ public class RepareBem {
 	}
 
 	private OrdemServico getOrdem(int id){
-		OrdemServico ordem = this.ordens.get(id);
-		if (ordem != null) {
-			return ordem;
+		for (OrdemServico ordem : ordens){
+			if (ordem.getId() == id ){
+				return ordem;
+			}
 		}
+
 		throw new IllegalArgumentException("ORDEM DE SERVIÇO INEXISTENTE");
 	}
 
 	private Reparo getReparo(String id){
-	    Reparo reparo = this.reparos.get(id);
-		if (reparo != null){
-			return reparo;
+		for (Reparo reparo : reparos){
+			if (reparo.getId().equals(id)){
+				return reparo;
+			}
 		}
+
 		throw new IllegalArgumentException("REPARO INEXISTENTE");
 	}
 }

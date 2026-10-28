@@ -46,6 +46,10 @@ public class OrdemServico {
         return this.status;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setStatus(String status){
         this.status = status;
     }
