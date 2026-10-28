@@ -24,7 +24,7 @@ public class RepareBem {
 
 		Reparo newReparo = new Reparo(idReparo, descricao, preco);
 		for (Reparo reparo : reparos){
-			if (reparo.equals(newReparo)){
+			if (newReparo.equals(reparo)){
 				return;
 			}
 		}
@@ -61,11 +61,16 @@ public class RepareBem {
 
 	public String listarOrdemDeServico(String status) {
 	    String out = "Ordens de serviço - " + status;
+		boolean vazio = true;
 		for (OrdemServico o : this.ordens){
 			if (o.getStatus().equals(status)){
 				out += "\n" + o.toString();
+				vazio = false;
 			}
 		}
+
+		if (vazio){ return "Não há ordens de serviço do tipo " + status;}
+
 	    return out;
 	}
 
@@ -79,7 +84,7 @@ public class RepareBem {
 
 	private OrdemServico getOrdem(int id){
 		for (OrdemServico ordem : ordens){
-			if (ordem.getId() == id ){
+			if (ordem != null && ordem.getId() == id ){
 				return ordem;
 			}
 		}
@@ -89,7 +94,7 @@ public class RepareBem {
 
 	private Reparo getReparo(String id){
 		for (Reparo reparo : reparos){
-			if (reparo.getId().equals(id)){
+			if (reparo != null && reparo.getId().equals(id)){
 				return reparo;
 			}
 		}

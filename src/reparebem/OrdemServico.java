@@ -8,9 +8,10 @@ public class OrdemServico {
     private String nomeCliente;
     private String telefone;
     private String roupa;
+    private static int MAX_REPAROS = 10;
 
     public OrdemServico(int id, String nomeCliente, String telefone, String roupa){
-        this.reparos = new Reparo[10];
+        this.reparos = new Reparo[MAX_REPAROS];
         this.nextReparo = 0;
         this.status = "Não iniciada";
 
@@ -21,7 +22,7 @@ public class OrdemServico {
     }
 
     public void addReparo(Reparo reparo){
-        if (this.nextReparo >= 9){
+        if (this.nextReparo >= MAX_REPAROS){
             return;
         }
           
